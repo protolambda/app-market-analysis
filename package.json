@@ -15,6 +15,7 @@
     "@babel/preset-env": "^7.0.0"
   },
   "dependencies": {
-    "google-play-scraper": "^6.2.0"
+    "google-play-scraper": "^6.2.0",
+    "babel-fs": "^1.0.5"
   }
 }
