@@ -4,7 +4,7 @@ import fs from "babel-fs";
 function escapeSpecialChars(str) {
     return str
         .replace(/[\\]/g, '\\\\')
-        .replace(/[\"]/g, '\\\"')
+        .replace(/["]/g,  '\'')
         .replace(/[\/]/g, '\\/')
         .replace(/[\b]/g, '\\b')
         .replace(/[\f]/g, '\\f')
@@ -32,10 +32,13 @@ async function scrapePage(appID, pageNum, resultsFile) {
     const result = await gplay.reviews({
         appId: appID,
         page: pageNum,
-        sort: gplay.sort.NEWEST
+        sort: gplay.sort.HELPFULNESS
     });
 
-
+    if (result.length === 0) {
+        console.log("Empty review page!");
+        return;
+    }
     // Append the row to the results file (CSV)
     await fs.appendFile(resultsFile, result.map(formatEntry).join("\n")+"\n");
 }
@@ -49,7 +52,7 @@ async function scrapePage(appID, pageNum, resultsFile) {
 export async function startScraping(appID, reviewScraper) {
 
     try {
-        if (!(fs.existsSync(reviewScraper.progressFile))) await fs.writeFile(reviewScraper.progressFile, "0").catch((v) => console.log("3", v));
+        if (!(fs.existsSync(reviewScraper.progressFile))) await fs.writeFile(reviewScraper.progressFile, "-1").catch((v) => console.log("3", v));
         if (!(fs.existsSync(reviewScraper.resultsFile))) await fs.writeFile(reviewScraper.resultsFile, "").catch((v) => console.log("4", v));
     } catch (err) {
         console.log("Could not create progress/result files for scraping!", err);
@@ -59,7 +62,7 @@ export async function startScraping(appID, reviewScraper) {
     let retries = 0;
     while(true) {
         // Read where we stopped scraping
-        const prevPageNum = parseInt((await fs.readFile(reviewScraper.progressFile).catch(console.log)) || "0");
+        const prevPageNum = parseInt((await fs.readFile(reviewScraper.progressFile).catch(console.log)) || "-1");
         if (prevPageNum >= reviewScraper.pageCount) {
             console.log("Finished scraping");
             break;
@@ -77,13 +80,13 @@ export async function startScraping(appID, reviewScraper) {
                 break;
             }
             // Wait and try again.
-            await sleep(100);
+            await sleep(1000);
             continue;
         }
         // Save our progress
         await fs.writeFile(reviewScraper.progressFile, currentPageNum.toString()).catch(console.log);
         // Sleep 0.1 seconds, we do not want the Google API to stop responding.
-        await sleep(100);
+        await sleep(1000);
     }
 }
 

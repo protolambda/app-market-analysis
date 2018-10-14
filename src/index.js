@@ -8,7 +8,7 @@ const reviewScraper = {
     progressFile: "out/scrape_progress.txt",
     resultsFile: "out/scrape_results.csv",
     // Each page is max. 40 reviews.
-    pageCount: 200
+    pageCount: 50000
 };
 
 startScraping(appID, reviewScraper);
