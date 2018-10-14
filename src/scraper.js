@@ -32,7 +32,7 @@ async function scrapePage(appID, pageNum, resultsFile) {
     const result = await gplay.reviews({
         appId: appID,
         page: pageNum,
-        sort: gplay.sort.HELPFULNESS
+        sort: gplay.sort.NEWEST
     });
 
     if (result.length === 0) {

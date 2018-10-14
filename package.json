@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "google-play-scraper": "^6.2.0",
-    "babel-fs": "^1.0.5"
+    "babel-fs": "^1.0.5",
+    "csv-parse": "^3.1.3"
   }
 }

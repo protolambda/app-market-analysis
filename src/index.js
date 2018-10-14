@@ -1,4 +1,4 @@
-import {startScraping} from "./scraper";
+// import {startScraping} from "./scraper";
 import {createTopWordList} from "./wordcloud";
 
 
@@ -11,7 +11,7 @@ const reviewScraper = {
     pageCount: 50000
 };
 
-startScraping(appID, reviewScraper);
+// startScraping(appID, reviewScraper);
 
-// createTopWordList(reviewScraper.resultsFile, "out/word_count.csv", 20);
+createTopWordList("scrape_results_sort_newest.csv", "out/word_count.csv", 11, 4, ["snapchat", "snap"]);
 
