@@ -37,7 +37,7 @@ async function scrapePage(appID, pageNum, resultsFile) {
 
 
     // Append the row to the results file (CSV)
-    await fs.appendFile(resultsFile, result.map(formatEntry).join("\n"));
+    await fs.appendFile(resultsFile, result.map(formatEntry).join("\n")+"\n");
 }
 
 /**
@@ -65,6 +65,7 @@ export async function startScraping(appID, reviewScraper) {
             break;
         }
         const currentPageNum = prevPageNum + 1;
+        console.log("Scraping page "+currentPageNum);
         try {
             // Scrape the next page
             await scrapePage(appID, currentPageNum, reviewScraper.resultsFile);
