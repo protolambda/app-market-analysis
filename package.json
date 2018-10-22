@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "scrape": "babel-node src/index.js"
+    "scrape": "babel-node src/index.js",
+    "similar": "babel-node src/similar.js"
   },
   "keywords": [],
   "author": "",
