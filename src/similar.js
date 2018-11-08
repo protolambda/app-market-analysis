@@ -2,10 +2,9 @@ import gplay from "google-play-scraper";
 import fs from "babel-fs";
 
 
-const appID = "com.snapchat.android";
 // gplay.similar({appId: appID, fullDetail: true, throttle: 10}).then(console.log);
 
-async function fetchSimilar(resultNodesFile, resultEdgesFile, maxDegree, maxOutEdges) {
+export async function fetchSimilar(appID, resultNodesFile, resultEdgesFile, maxDegree, maxOutEdges) {
     // Collection of resulting apps
     const results = [];
     // List of items, each item is a list of 2 elements: appID A, appID B
@@ -14,6 +13,10 @@ async function fetchSimilar(resultNodesFile, resultEdgesFile, maxDegree, maxOutE
     const seenAppIds = new Set();
     // Keep track of all appIDs, but per degree
     const appIdsByDegree = [[appID]];
+
+    const sourceNode = await gplay.app({appId: appID, throttle: 5});
+    results.push(sourceNode);
+    seenAppIds.add(appID);
     for(let d = 0; d < maxDegree; d++) {
         // Add new degree, this is where next apps will be inserted into.
         appIdsByDegree.push([]);
@@ -23,7 +26,7 @@ async function fetchSimilar(resultNodesFile, resultEdgesFile, maxDegree, maxOutE
             console.log("Fetching apps similar to ", srcAppId);
             let similarApps = null;
             try {
-                similarApps = await gplay.similar({appId: srcAppId, fullDetail: true, throttle: 10});
+                similarApps = await gplay.similar({appId: srcAppId, fullDetail: true, throttle: 5});
             } catch (err) {
                 // App not accessible? Continue.
                 console.log("Could not fetch app", err);
@@ -49,6 +52,7 @@ async function fetchSimilar(resultNodesFile, resultEdgesFile, maxDegree, maxOutE
     // Add header to nodes output
     await fs.appendFile(resultNodesFile, '"Id","Label","minInstalls","score","ratings","reviews","price","size","IAP","genre","developer","icon_link"\n');
     await fs.appendFile(resultNodesFile, results.map(formatEntry).join("\n")+"\n");
+    await fs.appendFile(resultEdgesFile, '"Source","Target"\n');
     await fs.appendFile(resultEdgesFile, edges.map(edge => `"${edge[0]}","${edge[1]}"`).join("\n")+"\n");
 }
 
@@ -74,6 +78,3 @@ function formatEntry(entry) {
 
     return dataRow.join(",")
 }
-
-
-fetchSimilar("nodes_similar_to_snapchat.csv", "edges_similar_to_snapchat.csv", 2, 6).then(_ => console.log("finished!"));

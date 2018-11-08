@@ -1,5 +1,7 @@
 // import {startScraping} from "./scraper";
 import {createTopWordList} from "./wordcloud";
+import {createTopWordList} from "./wordcloud";
+// import {fetchSimilar} from "./similar";
 
 
 const appID = "com.snapchat.android";
@@ -14,4 +16,7 @@ const reviewScraper = {
 // startScraping(appID, reviewScraper);
 
 createTopWordList("scrape_results_sort_newest.csv", "out/word_count.csv", 11, 4, ["snapchat", "snap"]);
+
+
+// fetchSimilar(appID, "nodes_similar_to_snapchat.csv", "edges_similar_to_snapchat.csv", 4, 6).then(_ => console.log("finished!"));
 
