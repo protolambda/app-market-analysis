@@ -1,7 +1,7 @@
 import gplay from "google-play-scraper";
 import fs from "babel-fs";
 
-
+// To get similar apps a specific app when debugging:
 // gplay.similar({appId: appID, fullDetail: true, throttle: 10}).then(console.log);
 
 export async function fetchSimilar(appID, resultNodesFile, resultEdgesFile, maxDegree, maxOutEdges) {
@@ -52,8 +52,8 @@ export async function fetchSimilar(appID, resultNodesFile, resultEdgesFile, maxD
     // Add header to nodes output
     await fs.appendFile(resultNodesFile, '"Id","Label","minInstalls","score","ratings","reviews","price","size","IAP","genre","developer","icon_link"\n');
     await fs.appendFile(resultNodesFile, results.map(formatEntry).join("\n")+"\n");
-    await fs.appendFile(resultEdgesFile, '"Source","Target"\n');
-    await fs.appendFile(resultEdgesFile, edges.map(edge => `"${edge[0]}","${edge[1]}"`).join("\n")+"\n");
+    await fs.appendFile(resultEdgesFile, '"Source","Target","Weight"\n');
+    await fs.appendFile(resultEdgesFile, edges.map((edge, i) => `"${edge[0]}","${edge[1]}",${maxOutEdges-i}`).join("\n")+"\n");
 }
 
 
