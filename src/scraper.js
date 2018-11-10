@@ -26,13 +26,14 @@ function formatEntry(entry) {
     return dataRow.join(",")
 }
 
-async function scrapePage(appID, pageNum, resultsFile) {
+async function scrapePage(appID, pageNum, resultsFile, sortingType) {
     // Sorting options: sort.NEWEST, sort.RATING, sort.HELPFULNESS
-    // Use "NEWEST", no bias, most recent information. Great!
+    // default to "NEWEST": no bias, most recent information. Great!
+    const sortingId = gplay.sort[(sortingType || "").toUpperCase()] || gplay.sort.NEWEST;
     const result = await gplay.reviews({
         appId: appID,
         page: pageNum,
-        sort: gplay.sort.NEWEST
+        sort: sortingId
     });
 
     if (result.length === 0) {
@@ -71,7 +72,7 @@ export async function startScraping(appID, reviewScraper) {
         console.log("Scraping page "+currentPageNum);
         try {
             // Scrape the next page
-            await scrapePage(appID, currentPageNum, reviewScraper.resultsFile);
+            await scrapePage(appID, currentPageNum, reviewScraper.resultsFile, reviewScraper.sortingType);
         } catch (err) {
             console.log("Failed to scrape page! Page number: ", currentPageNum, " error: ", err);
             retries++;

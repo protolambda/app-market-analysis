@@ -16,11 +16,13 @@ program
     .description('Scrape reviews for the specified app.')
     .option('-p, --progress-file <path>', 'Specify file-path for progress file. Defaults to scrape_progress.txt')
     .option('-r, --results-file <path>', 'Specify file-path for results CSV file. Defaults to scrape_results.csv')
+    .option('-s, --sorting-type <name>', 'Specify the sorting order used when scraping reviews. Can be NEWEST, RATING, or HELPFULNESS. Defaults to NEWEST')
     .option('-c, --page-count <count>', 'The amount of review pages to scrape, each page can be 1 - 40 reviews.', parseInt)
     .action(async function (appID, cmd) {
         await startScraping(appID, {
             progressFile: cmd.progressFile || 'scrape_progress.txt',
             resultsFile: cmd.resultsFile || 'scrape_results.csv',
+            sortingType: cmd.sortingType || 'NEWEST',
             // Each page is max. 40 reviews.
             pageCount: cmd.pageCount || 20
         });

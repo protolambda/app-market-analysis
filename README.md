@@ -46,6 +46,7 @@ Hence the choice for a file which keeps track of the last page-number. The resul
     Options:
       -p, --progress-file <path>  Specify file-path for progress file. Defaults to scrape_progress.txt
       -r, --results-file <path>   Specify file-path for results CSV file. Defaults to scrape_results.csv
+      -s, --sorting-type <name>   Specify the sorting order used when scraping reviews. Can be NEWEST, RATING, or HELPFULNESS. Defaults to NEWEST
       -c, --page-count <count>    The amount of review pages to scrape, each page can be 1 - 40 reviews.
       -h, --help                  output usage information
 
