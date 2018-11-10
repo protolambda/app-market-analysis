@@ -97,3 +97,13 @@ This list can then be inserted into any wordcloud tool online, to get the final 
       -n, --ratings <list>       A comma separated list of ratings to include. Defaults to all (1,2,3,4,5).
       -h, --help                 output usage information
 
+Here is an example that takes a set of scrape results, and creates a wordlist with each word:
+
+- occurring 11 or more times
+- with a length of at least 4
+- ignoring the name and alias of the app itself (e.g. snapchat)
+
+Command:
+
+    wordcloud -r out/scrape_results_sort_newest.csv -t 11 -l 4 --blacklist snap,snapchat
+
