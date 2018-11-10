@@ -78,6 +78,9 @@ The results are split in two files:
  starting from `edge-limit` (first recommendation), down to `1` (last recommendation).
 
 
+    $ app-market-analysis similar -d 4 -l 10 com.snapchat.android
+
+
 ### Wordcloud
 
 The analysis tool also includes this utility which converts the scraped reviews
@@ -105,5 +108,5 @@ Here is an example that takes a set of scrape results, and creates a wordlist wi
 
 Command:
 
-    wordcloud -r out/scrape_results_sort_newest.csv -t 11 -l 4 --blacklist snap,snapchat
+    $ wordcloud -r out/scrape_results_sort_newest.csv -t 11 -l 4 --blacklist snap,snapchat
 
