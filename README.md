@@ -93,6 +93,7 @@ This list can then be inserted into any wordcloud tool online, to get the final 
       -w, --word-file <path>     Specify file-path for the list of word-counts for the word-cloud.
       -t, --threshold <count>    The minimum occurrence count (threshold) for a word to be included.
       -l, --min-length <length>  The minimum length of a word to be included.
-      -b, --blacklist <list>     A comma separated list of words.
+      -b, --blacklist <list>     A comma separated list of words to filter out.
+      -n, --ratings <list>       A comma separated list of ratings to include. Defaults to all (1,2,3,4,5).
       -h, --help                 output usage information
 

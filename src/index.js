@@ -4,8 +4,12 @@ import {startScraping} from "./scraper";
 import {createTopWordList} from "./wordcloud";
 import {fetchSimilar} from "./similar";
 
-function listOpt(val) {
+function blacklistOpt(val) {
     return val.split(',').map(v => v.trim().toLowerCase());
+}
+
+function ratingListOpt(val) {
+    return val.split(',').map(v => parseInt(v.trim()));
 }
 
 program
@@ -34,14 +38,16 @@ program
     .option('-w, --word-file <path>', 'Specify file-path for the list of word-counts for the word-cloud.')
     .option('-t, --threshold <count>', 'The minimum occurrence count (threshold) for a word to be included.', parseInt)
     .option('-l, --min-length <length>', 'The minimum length of a word to be included.', parseInt)
-    .option('-b, --blacklist <list>', 'A comma separated list of words.', listOpt)
-    .action(async function (appID, cmd) {
+    .option('-b, --blacklist <list>', 'A comma separated list of words to filter out.', blacklistOpt)
+    .option('-n, --ratings <list>', 'A comma separated list of ratings to include. Defaults to all (1,2,3,4,5).', ratingListOpt)
+    .action(async function (cmd) {
         await createTopWordList(
             (cmd.resultsFile || 'scrape_results.csv'),
             (cmd.wordFile || 'word_count.csv'),
             (cmd.threshold || 10),
             (cmd.minLength || 4),
-            (cmd.blacklist || [])
+            (cmd.blacklist || []),
+            (cmd.ratings || [1,2,3,4,5])
         );
     });
 program

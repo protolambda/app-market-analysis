@@ -1,9 +1,9 @@
 import fs from 'fs';
 import parse from 'csv-parse';
 
-const commonWords = ["been", "ever", "doesn", "didn", "about", "all", "also", "and", "because", "but", "can", "come", "could", "day", "even", "find", "first", "for", "from", "get", "give", "have", "her", "here", "him", "his", "how", "into", "its", "just", "know", "like", "look", "make", "man", "many", "more", "new", "not", "now", "one", "only", "other", "our", "out", "people", "say", "see", "she", "some", "take", "tell", "than", "that", "the", "their", "them", "then", "there", "these", "they", "thing", "think", "this", "those", "time", "two", "use", "very", "want", "way", "well", "what", "when", "which", "who", "will", "with", "would", "year", "you", "your"];
+const commonWords = ["does","while","much","been","ever","able","dont","doesn","does","didn", "about", "all", "also", "and", "because", "but", "can", "come", "could", "day", "even", "find", "first", "for", "from", "get", "give", "have", "her", "here", "him", "his", "how", "into", "its", "just", "know", "like", "look", "make", "man", "many", "more", "new", "not", "now", "one", "only", "other", "our", "out", "people", "say", "see", "she", "some", "take", "tell", "than", "that", "the", "their", "them", "then", "there", "these", "they", "thing", "think", "this", "those", "time", "two", "use", "very", "want", "way", "well", "what", "when", "which", "who", "will", "with", "would", "year", "you", "your"];
 
-export async function createTopWordList(inputCSV, outputFile, thresholdWordCount, thresholdLength, blacklistWords) {
+export async function createTopWordList(inputCSV, outputFile, thresholdWordCount, thresholdLength, blacklistWords, ratings) {
 
     try {
         if (!(fs.existsSync(inputCSV))) {
@@ -21,6 +21,11 @@ export async function createTopWordList(inputCSV, outputFile, thresholdWordCount
             fs.createReadStream(inputCSV)
                 .pipe(parse({delimiter: ','}))
                 .on('data', function(csvrow) {
+                    // field index 2 is the review rating.
+                    const rating = csvrow[2];
+                    // Ignore reviews with a rating that's not included in the selected ratings.
+                    // This way, one can compile a wordcloud for any set of ratings, and compare differences.
+                    if (ratings.indexOf(parseInt(rating)) < 0) return;
                     // field index 4 is the review body
                     const words = csvrow[4].split(/[^\w]/g);
                     words.forEach((key) => {
