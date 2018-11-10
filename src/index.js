@@ -53,10 +53,10 @@ program
 program
     .command('similar <appID>')
     .description('Scrape a network of similar apps for the specified app.')
-    .option('-n, --nodes-file', 'Specify file-path for nodes CSV file. Defaults to nodes_similar_<appID>.csv')
-    .option('-e, --edges-file', 'Specify file-path for edges CSV file. Defaults to edges_similar_<appID>.csv')
-    .option('-d, --max-degree', 'The maximum degree of depth. I.e. how many nodes in the longest path from appID outwards. Defaults to 3.', parseInt)
-    .option('-l, --edge-limit', 'The maximum amount of edges per app. Defaults to 6.', parseInt)
+    .option('-n, --nodes-file <path>', 'Specify file-path for nodes CSV file. Defaults to nodes_similar_<appID>.csv')
+    .option('-e, --edges-file <path>', 'Specify file-path for edges CSV file. Defaults to edges_similar_<appID>.csv')
+    .option('-d, --max-degree <degree>', 'The maximum degree of depth. I.e. how many nodes in the longest path from appID outwards. Defaults to 3.', parseInt)
+    .option('-l, --edge-limit <limit>', 'The maximum amount of edges per app. Defaults to 6.', parseInt)
     .action(async function (appID, cmd) {
         await fetchSimilar(appID,
             (cmd.nodesFile || `nodes_similar_${appID}.csv`),

@@ -7,7 +7,7 @@ import fs from "babel-fs";
 export async function fetchSimilar(appID, resultNodesFile, resultEdgesFile, maxDegree, maxOutEdges) {
     // Collection of resulting apps
     const results = [];
-    // List of items, each item is a list of 2 elements: appID A, appID B
+    // List of items, each item is a list of 3 elements: appID A, appID B, weight
     const edges = [];
     // Keep track of all appIDs with a set, to spot duplicates
     const seenAppIds = new Set();
@@ -35,7 +35,7 @@ export async function fetchSimilar(appID, resultNodesFile, resultEdgesFile, maxD
             // Add all new edges
             for(let a = 0; a < similarApps.length && a < maxOutEdges; a++) {
                 const app = similarApps[a];
-                edges.push([srcAppId, app.appId]);
+                edges.push([srcAppId, app.appId, a]);
             }
             const newSimilars = similarApps.slice(0, maxOutEdges).filter(app => !seenAppIds.has(app.appId));
             // Add all new unseen apps to the results
@@ -53,7 +53,7 @@ export async function fetchSimilar(appID, resultNodesFile, resultEdgesFile, maxD
     await fs.appendFile(resultNodesFile, '"Id","Label","minInstalls","score","ratings","reviews","price","size","IAP","genre","developer","icon_link"\n');
     await fs.appendFile(resultNodesFile, results.map(formatEntry).join("\n")+"\n");
     await fs.appendFile(resultEdgesFile, '"Source","Target","Weight"\n');
-    await fs.appendFile(resultEdgesFile, edges.map((edge, i) => `"${edge[0]}","${edge[1]}",${maxOutEdges-i}`).join("\n")+"\n");
+    await fs.appendFile(resultEdgesFile, edges.map(edge => `"${edge[0]}","${edge[1]}",${maxOutEdges-edge[2]}`).join("\n")+"\n");
 }
 
 
